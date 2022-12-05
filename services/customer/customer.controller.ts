@@ -10,7 +10,7 @@ const billingPort = process.env.BILLING_PORT  || 4444
 
 export const NewUser = async(request:Request, response:Response)=>{
     try {
-        let {firstName, lastName, email, password}:customerDocumentT = request.body;
+        let {firstName, lastName, email, password} = request.body;
         let newUser = await customerModel.create({firstName, lastName, email, password})
         if(newUser) response.status(201).json({message:"User Created Successfully"})
     } catch (error) {
