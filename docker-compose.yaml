@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  db:
+    image: mongo:latest
+    container_name: mongodb
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    ports:
+      - 27027:27017
+  customer_service: 
+    build: ./services/customer
+    ports:
+      - 4465:4465
+    environment:
+      PORT : 4465
+      DB_URL : mongodb://localhost:27027
+      BILLING_PORT : 4444
+  billing_service:
+    build: ./services/billing
+    ports:
+      - 4444:4444
+    environment:
+      PORT : 4444
+      DB_URL : mongodb://localhost:27027
+      CUSTOMER_PORT : 4465
+  rabbitMq:
+    image: rabbitMq:3.11.4-alpine
+    container_name: rabbitMq
+    ports:
+      - 5676:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER = ""
+      - RABBITMQ_DEFAULT_PASS = ""

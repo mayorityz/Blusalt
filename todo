@@ -1,0 +1,4 @@
+1. use mongoDB in docker.
+2. connect the services to docker-compose.
+3. set env variables.
+4. Write tests.
