@@ -2,9 +2,11 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 import { hash } from "bcrypt";
 
 interface customerDocumentT extends Document {
-  amount:number,
-  customerId : string,
-  status : string
+  firstName:string,
+  lastName : string,
+  email : string,
+  password:string,
+  wallet:number
 }
 
 const customerSchema: Schema = new Schema(
