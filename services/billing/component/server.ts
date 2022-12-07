@@ -4,13 +4,14 @@ import initDb from "../DB";
 import BillingRoutes from "./billing.route"
 import {connect} from "amqplib"
 import {billingModel} from "./billing.model"
+import {RABBITMQURL} from "../utils/env"
 
 dotenv.config();
 initDb();
 
 const app: Express = express();
 const port = process.env.PORT || 4444;
-const amqpServer = process.env.RabbitMqUrl || "amqp://localhost:5672"
+const amqpServer = RABBITMQURL || "amqp://localhost:5672"
 var channel, connection;
 
 app.use(express.json()); 

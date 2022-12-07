@@ -21,7 +21,7 @@ export const FundWallet = async(req:Request, res:Response)=>{
     // ! check that the id/email exists -> i am using email for ease here.
         // ! make post request via web hook to the Billing Service.
         // ! collect previous balance
-        // ! send producer
+        // ! use producer
     try {
         const {amount, email} = req.body;
         const verifyEmail = await customerModel.findOne({email});
@@ -33,7 +33,6 @@ export const FundWallet = async(req:Request, res:Response)=>{
                 lastBalance : verifyEmail.wallet
             })
             
-            console.log(saving.data)
             await Rabbit(saving.data.data);
             res.status(201).json({message:"Account Funded Successfully!"})
         }

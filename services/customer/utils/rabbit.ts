@@ -7,7 +7,6 @@ interface dataI{
 }
 
 export const Rabbit =async(data:dataI)=>{
-    console.log("di",data)
     const amqpServer = RABBITMQURL || "amqp://localhost:5672"
     const amqpConnection = await connect(amqpServer)
     const createChannel = await amqpConnection.createChannel();

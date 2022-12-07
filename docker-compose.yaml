@@ -17,6 +17,7 @@ services:
       PORT : 4465
       DB_URL : mongodb://localhost:27027
       BILLING_PORT : 4444
+      RABBITMQURL : amqp://localhost:5676
   billing_service:
     build: ./services/billing
     ports:
@@ -25,12 +26,13 @@ services:
       PORT : 4444
       DB_URL : mongodb://localhost:27027
       CUSTOMER_PORT : 4465
+      RABBITMQURL : amqp://localhost:5676
   rabbitMq:
     image: rabbitMq:3.11.4-alpine
     container_name: rabbitMq
     ports:
       - 5676:5672
-      - 15672:15672
+      - 15673:15672
     environment:
-      - RABBITMQ_DEFAULT_USER = ""
-      - RABBITMQ_DEFAULT_PASS = ""
+      - RABBITMQ_DEFAULT_USER = "guest"
+      - RABBITMQ_DEFAULT_PASS = "guest"
