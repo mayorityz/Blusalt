@@ -1,12 +1,9 @@
 import { Request, Response } from "express"
 import {customerModel, customerDocumentT} from "./customer.model"
 import axios from "axios"
-import {connect} from "amqplib"
-import dotenv from "dotenv";
-dotenv.config();
+import { BILLING_PORT } from "./utils/env"
 
-const amqpServer = process.env.RabbitMqUrl || "amqp://localhost"
-const billingPort = process.env.BILLING_PORT  || 4444
+const billingPort = BILLING_PORT  || 4444
 
 export const NewUser = async(request:Request, response:Response)=>{
     try {
@@ -35,12 +32,7 @@ export const FundWallet = async(req:Request, res:Response)=>{
                 lastBalance : verifyEmail.wallet
             })
             
-            const amqpConnection = await connect(amqpServer)
-            const createChannel = await amqpConnection.createChannel();
-
-            await createChannel.assertQueue("updateRecord", {durable:false})
-            createChannel.sendToQueue("updateRecord", Buffer.from(JSON.stringify({id: saving.data._id})));
-
+            console.log(saving)
             res.status(201).json({message:"Account Funded Successfully!"})
         }
         else{

@@ -18,27 +18,27 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
 
 
-connectQueue() // call connectQueue function
-async function connectQueue() {
-    try {
-        connection = await connect(amqpServer);
-        channel = await connection.createChannel()
+// connectQueue() // call connectQueue function
+// async function connectQueue() {
+//     try {
+//         connection = await connect(amqpServer);
+//         channel = await connection.createChannel()
         
-        await channel.assertQueue("updateRecord")
-        channel.consume("updateRecord", data => {
-            console.log("Data received : ", `${Buffer.from(data.content)}` );
-            let _data = JSON.parse(data.content)
-            channel.ack(data)
-            // update the db
-            // customerModel.updateOne({_id : _data._id}, {})
-            console.log("logged : ")
-            console.log(data.content)
-        })
+//         await channel.assertQueue("updateRecord")
+//         channel.consume("updateRecord", data => {
+//             console.log("Data received : ", `${Buffer.from(data.content)}` );
+//             let _data = JSON.parse(data.content)
+//             channel.ack(data)
+//             // update the db
+//             // customerModel.updateOne({_id : _data._id}, {})
+//             console.log("logged : ")
+//             console.log(data.content)
+//         })
 
-    } catch (error) {
-        console.log(error)
-    }
-}
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
 
 app.get("/", (req: Request, res: Response) => {
   console.log(req.body);

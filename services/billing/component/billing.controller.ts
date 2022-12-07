@@ -8,6 +8,7 @@ export const NewTransaction = async(req:Request, res:Response)=>{
         const save = await billingModel.create({amount, customerId});
         if(save) res.status(200).json({message:"New Billing Transaction Success!"})
     } catch (error) {
+        console.log(error)
         res.status(400).json({message:error.message})
     }
 }
