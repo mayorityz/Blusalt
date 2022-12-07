@@ -24,10 +24,10 @@ async function connectQueue() {
         channel = await connection.createChannel()
         
         await channel.assertQueue("updateRecord")
-        channel.consume("updateRecord", async(data) => {
+        channel.consume("updateRecord", (data) => {
             let _data = JSON.parse(Buffer.from(data.content))
             // update the db : status:successful
-            await billingModel.updateOne({_id : _data.id}, {status:"success"})
+            setTimeout(async()=>{await billingModel.updateOne({_id : _data.id}, {status:"success"})}, 1000)
             channel.ack(data)            
         })
 
