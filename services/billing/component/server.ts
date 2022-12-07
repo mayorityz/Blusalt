@@ -26,7 +26,7 @@ async function connectQueue() {
         await channel.assertQueue("updateRecord")
         channel.consume("updateRecord", async(data) => {
             let _data = JSON.parse(Buffer.from(data.content))
-            // update the db : status:successful & increment amount
+            // update the db : status:successful
             await billingModel.updateOne({_id : _data.id}, {status:"success"})
             channel.ack(data)            
         })
@@ -37,8 +37,7 @@ async function connectQueue() {
 }
 
 app.get("/", (req: Request, res: Response) => {
-  console.log(req.body);
-  res.send(req.body);
+  res.send("Billing Server is up!");
 });
 
 app.use("/api/v1", BillingRoutes());
