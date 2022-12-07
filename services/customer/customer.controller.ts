@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import {customerModel, customerDocumentT} from "./customer.model"
 import axios from "axios"
 import { BILLING_PORT } from "./utils/env"
+import { Rabbit } from "./utils/rabbit"
 
 const billingPort = BILLING_PORT  || 4444
 
@@ -32,7 +33,8 @@ export const FundWallet = async(req:Request, res:Response)=>{
                 lastBalance : verifyEmail.wallet
             })
             
-            console.log(saving)
+            console.log(saving.data)
+            await Rabbit(saving.data.data);
             res.status(201).json({message:"Account Funded Successfully!"})
         }
         else{

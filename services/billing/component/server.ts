@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import initDb from "../DB";
 import BillingRoutes from "./billing.route"
 import {connect} from "amqplib"
+import {billingModel} from "./billing.model"
 
 dotenv.config();
 initDb();
@@ -22,14 +23,11 @@ async function connectQueue() {
         channel = await connection.createChannel()
         
         await channel.assertQueue("updateRecord")
-        channel.consume("updateRecord", data => {
-            console.log("Data received : ", `${Buffer.from(data.content)}` );
-            let _data = JSON.parse(data.content)
-            channel.ack(data)
-            // update the db
-            // customerModel.updateOne({_id : _data._id}, {})
-            console.log("logged : ")
-            console.log(data.content)
+        channel.consume("updateRecord", async(data) => {
+            let _data = JSON.parse(Buffer.from(data.content))
+            // update the db : status:successful & increment amount
+            await billingModel.updateOne({_id : _data.id}, {status:"success"})
+            channel.ack(data)            
         })
 
     } catch (error) {

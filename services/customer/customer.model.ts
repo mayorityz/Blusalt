@@ -30,7 +30,7 @@ const customerSchema: Schema = new Schema(
       },
       wallet:{
         type:Schema.Types.Number,
-        default:"pending"
+        default:0
       }
   },
   {
